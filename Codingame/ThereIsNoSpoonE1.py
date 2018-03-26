@@ -1,18 +1,11 @@
-'''
-Created on May 16, 2017
-'''
-
-# width = int(input())  # the number of cells on the X axis
-# height = int(input())  # the number of cells on the Y axis
-
 # width = int(input())  # the number of cells on the X axis
 # height = int(input())  # the number of cells on the Y axis
 # L = []
 
 # L = ['00','0.']  # 2x2
-L = ['0.0.0']  # horizontal
-#L = ['0', '0', '0', '0']  # vertical
-
+# L = ['0.0.0']  # horizontal
+# L = ['0', '0', '0', '0']  # vertical
+L = ['0.0', '...', '0.0']  # square
 width = len(L[0])
 height = len(L)
 
@@ -25,35 +18,27 @@ for c in range(width):
     for r in range(height):
         APU[c][r] = L[r][c]
 
+
+def find_rn(a, col, row, w):
+    for i in range(col + 1, w):
+        if a[i][row] == "0":
+            return i, row
+    return -1, -1
+
+
+def find_bn(a, col, row, h):
+    for i in range(row + 1, h):
+        if a[col][i] == "0":
+            return col, i
+    return -1, -1
+
+
 for r in range(height):
     for c in range(width):
-        s = "{} {} ".format(c, r)
+
         if APU[c][r] == "0":
+            current_node = "{} {} ".format(c, r)
+            rn = find_rn(APU, c, r, width)
+            bn = find_bn(APU, c, r, height)
 
-            try:
-                if APU[c + 1][r] == "0":  # check if it has right N
-                    s = s + "{} {} ".format(c + 1, r)
-                else:
-                    s = s + "{} {} ".format(-1, -1)
-            except IndexError:
-                s = s + "{} {} ".format(-1, -1)
-            try:
-                if APU[c][r + 1] == "0":  # check if it has bottom N
-                    s = s + "{} {} ".format(c, r + 1)
-                else:
-                    s = s + "{} {} ".format(-1, -1)
-            except IndexError:
-                s = s + "{} {} ".format(-1, -1)
-
-            print(s.rstrip()) if len(s) > 10 else exit()
-
-        elif APU[c][r] == ".":
-            pass
-        # node, node to right, node to bottom
-
-# print(APU)
-# print(APU[0][1], '\n', end='')
-# print(APU[1][1], '\n', end='')
-
-# Three coordinates: a node, its right neighbor, its bottom neighbor
-# print("0 0 1 0 0 1")
+            print(current_node + "{} {}".format(rn[0], rn[1]) + " {} {}".format(bn[0], bn[1]))
